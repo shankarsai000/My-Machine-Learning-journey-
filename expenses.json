@@ -1,0 +1,17 @@
+[
+    {
+        "amount": 5000.0,
+        "category": "SHOPPING",
+        "note": "NTH"
+    },
+    {
+        "amount": 20000.0,
+        "category": "SHOPPIMG",
+        "note": "NTH"
+    },
+    {
+        "amount": 35700.0,
+        "category": "MOBILE",
+        "note": "VIVO"
+    }
+]
