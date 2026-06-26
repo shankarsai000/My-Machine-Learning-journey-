@@ -1,0 +1,29 @@
+1. Check Changes
+git status
+
+2. Add Everything
+git add .
+
+3. Commit
+git commit -m "Added Day 22 ML practice"
+
+
+
+4. Pull Latest Changes
+
+This is the important step.
+
+git pull origin main --rebase
+
+Even if you think nobody changed the repo, this command is safe.
+
+5. Push
+
+git push origin main
+
+Daily Shortcut Just run:
+
+git add .
+git commit -m "Added Day XX"
+git pull origin main --rebase
+git push origin main
