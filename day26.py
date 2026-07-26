@@ -340,3 +340,274 @@ print("Production ML systems monitor both")
 print("prediction quality and operational metrics")
 
 print("such as latency and throughput.")
+
+
+# =============================================================================
+# DAY 26 : ADVANCED MODEL EVALUATION METRICS
+# =============================================================================
+#
+# WHY THIS NOTEBOOK?
+# -----------------------------------------------------------------------------
+#
+# Training a Machine Learning model is only half of the job.
+#
+# The real question is:
+#
+#     "How good is my model?"
+#
+# A model with very high Accuracy is NOT always a good model.
+#
+# Example:
+#
+# Suppose a dataset contains
+#
+#     990 Healthy Patients
+#      10 Cancer Patients
+#
+# If the model predicts EVERY patient as Healthy,
+#
+# Accuracy becomes
+#
+#     990 / 1000 = 99%
+#
+# Yet the model completely fails because it detects
+# ZERO cancer patients.
+#
+# Therefore,
+#
+# Accuracy alone should NEVER be used to evaluate
+# classification models.
+#
+#
+# =============================================================================
+# GOAL OF THIS NOTEBOOK
+# =============================================================================
+#
+# Learn how professional ML engineers evaluate
+# classification models.
+#
+# Metrics covered:
+#
+# ✔ Accuracy
+# ✔ Balanced Accuracy
+# ✔ Precision
+# ✔ Recall
+# ✔ F1 Score
+# ✔ ROC-AUC
+# ✔ PR-AUC
+# ✔ Log Loss
+# ✔ Brier Score
+# ✔ Matthews Correlation Coefficient (MCC)
+# ✔ Cohen's Kappa
+# ✔ Confusion Matrix
+# ✔ Classification Report
+#
+# Production Metrics:
+#
+# ✔ Latency
+# ✔ Throughput
+#
+#
+# =============================================================================
+# WHY DO WE NEED MULTIPLE METRICS?
+# =============================================================================
+#
+# Every metric answers a different question.
+#
+# Accuracy
+#
+#     "Overall, how many predictions were correct?"
+#
+#
+# Precision
+#
+#     "Out of everything predicted as Positive,
+#      how many were actually Positive?"
+#
+#
+# Recall
+#
+#     "Out of all actual Positive samples,
+#      how many did we detect?"
+#
+#
+# F1 Score
+#
+#     "How balanced are Precision and Recall?"
+#
+#
+# ROC-AUC
+#
+#     "How well does the model separate
+#      Positive and Negative classes?"
+#
+#
+# PR-AUC
+#
+#     "How good is the model on imbalanced datasets?"
+#
+#
+# Log Loss
+#
+#     "How confident are the probability predictions?"
+#
+#
+# Brier Score
+#
+#     "How accurate are the predicted probabilities?"
+#
+#
+# MCC
+#
+#     "Overall classification quality,
+#      especially for imbalanced datasets."
+#
+#
+# Cohen's Kappa
+#
+#     "How much better is the model than
+#      random guessing?"
+#
+#
+# =============================================================================
+# WHY PRODUCTION ML IS DIFFERENT
+# =============================================================================
+#
+# Most beginners stop after printing:
+#
+# Accuracy
+#
+# Professional ML Engineers ask:
+#
+#     Is the model reliable?
+#
+#     Is it calibrated?
+#
+#     Is it fast enough?
+#
+#     Can users trust it?
+#
+#     Does it generalize?
+#
+#     Is it fair?
+#
+#     Does it improve business KPIs?
+#
+#
+# Therefore, real ML systems also monitor:
+#
+# • Latency
+# • Throughput
+# • Calibration
+# • Drift
+# • Fairness
+# • Revenue Impact
+# • Customer Satisfaction
+# • Alert Fatigue
+#
+#
+# =============================================================================
+# WHICH METRIC SHOULD YOU USE?
+# =============================================================================
+#
+# Cancer Detection
+#
+#     Recall
+#
+# Missing a patient is very expensive.
+#
+#
+# Fraud Detection
+#
+#     Recall
+#
+# Missing fraud is costly.
+#
+#
+# Spam Detection
+#
+#     Precision
+#
+# Avoid blocking genuine emails.
+#
+#
+# Search Ranking
+#
+#     ROC-AUC
+#
+# Compare how well models rank results.
+#
+#
+# Imbalanced Classification
+#
+#     PR-AUC
+#
+# Accuracy becomes misleading.
+#
+#
+# General Classification
+#
+#     F1 Score
+#
+# Balance Precision and Recall.
+#
+#
+# Probability Prediction
+#
+#     Log Loss
+#     Brier Score
+#
+#
+# =============================================================================
+# PRODUCTION MINDSET
+# =============================================================================
+#
+# Beginner:
+#
+#     "Which model has the highest Accuracy?"
+#
+#
+# Professional:
+#
+#     "Which type of mistake costs the business the most?"
+#
+#
+# Business Cost determines
+#
+# which evaluation metric matters.
+#
+#
+# =============================================================================
+# GOLDEN RULE
+# =============================================================================
+#
+# NEVER optimize a model simply to increase Accuracy.
+#
+# Instead ask:
+#
+# 1. What problem am I solving?
+#
+# 2. What kind of mistakes are expensive?
+#
+# 3. Which metric represents that business objective?
+#
+# 4. Does improving this metric actually improve
+#    the real-world system?
+#
+#
+# =============================================================================
+# WHAT I LEARNED TODAY
+# =============================================================================
+#
+# ✔ Accuracy is NOT everything.
+#
+# ✔ Every metric tells a different story.
+#
+# ✔ Business objectives decide which metric matters.
+#
+# ✔ Production ML is much more than training models.
+#
+# ✔ Evaluation is one of the most important skills
+#   of an ML Engineer.
+#
+# =============================================================================
