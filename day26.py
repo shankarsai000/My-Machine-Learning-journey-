@@ -611,3 +611,38 @@ print("such as latency and throughput.")
 #   of an ML Engineer.
 #
 # =============================================================================
+
+
+"""
+
+               MODEL TRAINING
+                       │
+      ┌────────────────┼────────────────┐
+      │                │                │
+Accuracy        Precision        Recall
+      │                │                │
+      └──────────F1 Score───────────────┘
+                       │
+         Probability Quality
+     ┌──────────────┼──────────────┐
+ Calibration     Log Loss     Brier Score
+                       │
+        Ranking Performance
+     ┌────────────────┴─────────────┐
+     ROC-AUC                  PR-AUC
+                       │
+         Production Monitoring
+     ┌──────────────┬───────────────┐
+ Latency      Throughput       Drift
+                       │
+ Responsible AI
+     ┌──────────────┴───────────────┐
+ Fairness                 Alert Fatigue
+                       │
+            Business Success
+     ┌──────────────┴───────────────┐
+ Revenue Impact     Customer Satisfaction
+
+
+
+ """
