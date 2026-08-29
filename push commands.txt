@@ -24,6 +24,6 @@ git push origin main
 Daily Shortcut Just run:
 
 git add .
-git commit -m "Added Day 34 "
+git commit -m "1st day of UnsupervisedLearning ,Added Day 35  "
 git pull origin main --rebase
 git push origin main
