@@ -1,0 +1,11 @@
+{
+    "seed": 42,
+    "test_size": 0.2,
+    "validation_size": 0.2,
+    "batch_size": 32,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "epochs": 50,
+    "patience": 8,
+    "hidden_dim": 32
+}
