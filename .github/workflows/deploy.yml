@@ -1,0 +1,122 @@
+name: ML API - CI and CD
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ml-inference-service/**"
+      - ".github/workflows/deploy.yml"
+
+  pull_request:
+    branches: [main]
+    paths:
+      - "ml-inference-service/**"
+      - ".github/workflows/deploy.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  # ======================================
+  # JOB 1: TEST
+  # ======================================
+  test:
+    name: Test Application
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ml-inference-service
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            ml-inference-service/requirements.txt
+            ml-inference-service/requirements-dev.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Lint
+        run: ruff check app scripts tests
+
+      - name: Run tests
+        run: pytest -v
+
+      - name: Build Docker image locally
+        run: docker build -t ml-api:test .
+
+  # ======================================
+  # JOB 2: PUBLISH AND DEPLOY
+  # ======================================
+  deploy:
+    name: Publish and Deploy
+    needs: test
+
+    if: >
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main'
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          project_id: ${{ vars.GCP_PROJECT_ID }}
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOYER_SA }}
+
+      - name: Setup Google Cloud CLI
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Configure Docker authentication
+        run: |
+          gcloud auth configure-docker \
+            "${{ vars.GCP_REGION }}-docker.pkg.dev" \
+            --quiet
+
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build and push image
+        id: build
+        uses: docker/build-push-action@v7
+        with:
+          context: ./ml-inference-service
+          push: true
+          tags: |
+            ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/${{ vars.GCP_REPOSITORY }}/ml-api:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: true
+          sbom: true
+
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v3
+        with:
+          service: ${{ vars.GCP_SERVICE }}
+          region: ${{ vars.GCP_REGION }}
+          image: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/${{ vars.GCP_REPOSITORY }}/ml-api@${{ steps.build.outputs.digest }}
+          wait: true
+
+      - name: Show deployment URL
+        run: |
+          echo "Deployment URL: ${{ steps.deploy.outputs.url }}"

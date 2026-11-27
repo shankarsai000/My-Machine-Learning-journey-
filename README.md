@@ -160,6 +160,10 @@ Machine-Learning-Journey/
 | 7 | Advanced NumPy | ✅ |
 | ... | ... | 🚧 |
 | 60 | Final ML Project | ⏳ |
+| 61 | Generative Models — VAE & GAN | ✅ |
+| 62 | Deep Learning / GANs | ✅ |
+| 63 | FastAPI ML Inference Service | ✅ |
+| 64 | Docker, CI/CD & Cloud Deployment | ✅ |
 
 ---
 

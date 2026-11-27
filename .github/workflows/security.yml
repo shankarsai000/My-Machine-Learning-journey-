@@ -1,0 +1,44 @@
+name: ML API - Security Scan
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ml-inference-service/**"
+      - ".github/workflows/security.yml"
+
+  pull_request:
+    branches: [main]
+    paths:
+      - "ml-inference-service/**"
+      - ".github/workflows/security.yml"
+
+  schedule:
+    # Run every Monday at 09:00 UTC
+    - cron: "0 9 * * 1"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  trivy-scan:
+    name: Vulnerability Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Build Docker image
+        run: docker build -t ml-api:scan ./ml-inference-service
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: ml-api:scan
+          format: table
+          exit-code: "0"
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
